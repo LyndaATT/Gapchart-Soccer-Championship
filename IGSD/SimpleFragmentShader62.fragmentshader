@@ -1,0 +1,24 @@
+#version 330 core
+
+smooth in float depth;
+smooth in vec3 colort;
+
+// la position dans la texture. elle varie pour tous les fragments
+smooth in vec2 UV;
+smooth in float opacity;
+
+// la texture est uniforme car "comune a tous les pixels"
+uniform sampler2DRect loctexture;
+
+out vec4 color;
+
+void main(){
+  vec4 coltex = texture( loctexture, UV );
+  // on melange la texture (si le alpha de ce pixel de texture n'est pas trop transparent)
+  // avec la couleur de surface interpolee (si la texture est transparente a ce fragment la)
+  color = vec4(coltex.a*coltex.r+(1.0-coltex.a)*colort.r, 
+               coltex.a*coltex.g+(1.0-coltex.a)*colort.g,
+               coltex.a*coltex.b+(1.0-coltex.a)*colort.b,
+               opacity);
+  gl_FragDepth = 1.0-depth/10.0;   
+}

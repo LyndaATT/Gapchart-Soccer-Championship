@@ -1,0 +1,33 @@
+#version 330 core
+
+//Entrees
+layout(location = 0) in vec3 vertexPosition_modelspace;
+layout(location = 1) in vec3 vertexColor_modelspace;
+layout(location = 3) in vec2 vertexTexcoord_modelspace;
+layout(location = 2) in vec3 gainLoss_modelspace;
+
+// Sortie
+smooth out vec3 colort;
+smooth out float depth;
+smooth out float opacity;
+smooth out vec2 UV;
+
+// Params
+uniform mat4 MVP;
+uniform int COMPTEUR;
+
+// Variables globales
+float a;
+
+void main(){
+  a = gainLoss_modelspace[2];
+  gl_Position = MVP * vec4(vertexPosition_modelspace, 1.0);
+  depth  = gl_Position.z+a;
+  opacity=1.f;
+  colort = vertexColor_modelspace;
+  if(COMPTEUR==0){colort = vertexColor_modelspace; opacity=1.f;}
+  if(COMPTEUR==1){colort = vertexColor_modelspace; opacity=1.f;  depth += 9;}
+  if(COMPTEUR==2){colort = vec3(0.3, 0.3, 0.3); opacity = 0.5;}
+  // on fait juste passer les coordonnes UV du vertex au fragment shader car ca fera l'interpolation pour chaque fragment
+  UV     = vertexTexcoord_modelspace;
+}
