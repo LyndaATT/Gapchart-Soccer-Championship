@@ -1,2 +1,2 @@
 # IGSD
-Programming a GapChart of English  football champions using OpenGL and OpenCV in C++
+Implementing a GapChart for an English  football Championship using OpenGL and OpenCV in C++
